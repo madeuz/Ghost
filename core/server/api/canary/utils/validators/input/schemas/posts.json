@@ -195,6 +195,7 @@
         "post-tags": {
             "description": "Tags of the post",
             "type": "array",
+            "minItems": 1,
             "items": {
                 "anyOf": [{
                     "type": "object",
