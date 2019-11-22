@@ -1,12 +1,9 @@
 /**
  * <figure class="kg-gallery-card kg-width-wide">
  *   <div class="kg-gallery-container>
- *      <div class="kg-gallery-row">
  *        <div class="kg-gallery-image"><img width="" height=""></div>
  *        <div class="kg-gallery-image"><img width="" height=""></div>
  *        <div class="kg-gallery-image"><img width="" height=""></div>
- *      </div>
- *      <div class="kg-gallery-row">
  *        <div class="kg-gallery-image"><img></div>
  *        <div class="kg-gallery-image"><img></div>
  *      </div>
@@ -16,8 +13,6 @@
  */
 
 const createCard = require('../create-card');
-
-const MAX_IMG_PER_ROW = 3;
 
 module.exports = createCard({
     name: 'gallery',
@@ -51,53 +46,24 @@ module.exports = createCard({
         container.setAttribute('class', 'kg-gallery-container');
         figure.appendChild(container);
 
-        let buildStructure = function buildStructure(images) {
-            let rows = [];
-            let noOfImages = images.length;
+        validImages.forEach((image) => {
+            let imgDiv = dom.createElement('div');
+            imgDiv.setAttribute('class', 'kg-gallery-image');
 
-            images.forEach((image, idx) => {
-                let row = image.row;
+            let img = dom.createElement('img');
+            img.setAttribute('src', image.src);
+            img.setAttribute('width', image.width);
+            img.setAttribute('height', image.height);
 
-                if (noOfImages > 1 && (noOfImages % MAX_IMG_PER_ROW === 1) && (idx === (noOfImages - 2))) {
-                    row = row + 1;
-                }
-                if (!rows[row]) {
-                    rows[row] = [];
-                }
+            if (image.alt) {
+                img.setAttribute('alt', image.alt);
+            }
+            if (image.title) {
+                img.setAttribute('title', image.title);
+            }
 
-                rows[row].push(image);
-            });
-
-            return rows;
-        };
-
-        let rows = buildStructure(validImages);
-
-        rows.forEach((row) => {
-            let rowDiv = dom.createElement('div');
-            rowDiv.setAttribute('class', 'kg-gallery-row');
-
-            row.forEach((image) => {
-                let imgDiv = dom.createElement('div');
-                imgDiv.setAttribute('class', 'kg-gallery-image');
-
-                let img = dom.createElement('img');
-                img.setAttribute('src', image.src);
-                img.setAttribute('width', image.width);
-                img.setAttribute('height', image.height);
-
-                if (image.alt) {
-                    img.setAttribute('alt', image.alt);
-                }
-                if (image.title) {
-                    img.setAttribute('title', image.title);
-                }
-
-                imgDiv.appendChild(img);
-                rowDiv.appendChild(imgDiv);
-            });
-
-            container.appendChild(rowDiv);
+            imgDiv.appendChild(img);
+            container.appendChild(imgDiv);
         });
 
         if (payload.caption) {
