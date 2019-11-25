@@ -29,11 +29,6 @@ module.exports = function normalize(req, res, next) {
             // CASE: push the processed/optimised image
             req.files.push(Object.assign(req.file, {path: out}));
 
-            // CASE: push original image, we keep a copy of it
-            const parsedFileName = path.parse(req.file.name);
-            const newName = `${parsedFileName.name}_o${parsedFileName.ext}`;
-            req.files.push(Object.assign(cloneDeep(req.file), {path: originalPath, name: newName}));
-
             next();
         })
         .catch((err) => {
