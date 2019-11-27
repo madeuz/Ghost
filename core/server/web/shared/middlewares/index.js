@@ -7,6 +7,10 @@ module.exports = {
         return require('./image');
     },
 
+    get videoEncode() {
+        return require('./video-encode');
+    },
+
     get validation() {
         return require('./validation');
     },

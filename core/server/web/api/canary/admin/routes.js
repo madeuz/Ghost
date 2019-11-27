@@ -186,7 +186,28 @@ module.exports = function apiRoutes() {
         upload.single('file'),
         shared.middlewares.validation.upload({type: 'images'}),
         shared.middlewares.image.normalize,
-        http(apiCanary.images.upload)
+        http(apiCanary.storage.upload)
+    );
+
+    // ## Videos
+    router.post('/videos/upload',
+        mw.authAdminApi,
+        upload.disableUploadClear,
+        upload.single('file'),
+        shared.middlewares.validation.upload({type: 'videos'}),
+        shared.middlewares.videoEncode,
+        http(apiCanary.processing.init)
+    );
+
+    router.get('/processing/:id', mw.authAdminApi, http(apiCanary.processing.read));
+    router.del('/processing/:id', mw.authAdminApi, http(apiCanary.processing.destroy));
+
+    // ## Documents
+    router.post('/documents/upload',
+        mw.authAdminApi,
+        upload.single('file'),
+        shared.middlewares.validation.upload({type: 'documents'}),
+        http(apiCanary.storage.upload)
     );
 
     // ## Invites

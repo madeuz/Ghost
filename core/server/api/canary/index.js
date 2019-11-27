@@ -71,8 +71,8 @@ module.exports = {
         return shared.pipeline(require('./members'), localUtils);
     },
 
-    get images() {
-        return shared.pipeline(require('./images'), localUtils);
+    get storage() {
+        return shared.pipeline(require('./storage'), localUtils);
     },
 
     get tags() {
@@ -113,6 +113,10 @@ module.exports = {
 
     get serializers() {
         return require('./utils/serializers');
+    },
+
+    get processing() {
+        return require('./processing');
     },
 
     /**

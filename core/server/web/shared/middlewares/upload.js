@@ -11,6 +11,11 @@ const upload = {
 
 const deleteSingleFile = file => fs.unlink(file.path).catch(err => common.logging.error(err));
 
+const disableUploadClear = (req, res, next) => {
+    req.disableUploadClear = true;
+    next();
+};
+
 const single = name => (req, res, next) => {
     const singleUpload = upload.multer.single(name);
     singleUpload(req, res, (err) => {
@@ -40,4 +45,4 @@ const single = name => (req, res, next) => {
     });
 };
 
-module.exports = {single};
+module.exports = {disableUploadClear, single};

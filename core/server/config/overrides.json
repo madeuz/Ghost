@@ -36,6 +36,14 @@
             "extensions": [".jpg", ".jpeg", ".gif", ".png", ".svg", ".svgz", ".ico"],
             "contentTypes": ["image/jpeg", "image/png", "image/gif", "image/svg+xml", "image/x-icon", "image/vnd.microsoft.icon"]
         },
+        "videos": {
+            "extensions": [".3gp", ".mp4", ".m4a", ".m4p", ".m4b", ".m4r", ".m4v", ".m1v", ".ogg", ".mov", ".qt", ".webm", ".m4v", ".asf", ".wma", ".wmv", ".avi"],
+            "contentTypes": ["video/3gpp", "video/mp4", "video/mpeg", "video/ogg", "video/quicktime", "video/webm", "video/x-m4v", "video/ms-asf", "video/x-ms-wmv", "video/x-msvideo"]
+        },
+        "documents": {
+            "extensions": [".pdf"],
+            "contentTypes": ["application/pdf"]
+        },
         "icons": {
             "extensions": [".png", ".ico"],
             "contentTypes": ["image/png", "image/x-icon", "image/vnd.microsoft.icon"]
