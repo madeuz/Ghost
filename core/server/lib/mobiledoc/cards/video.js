@@ -21,6 +21,7 @@ module.exports = createCard({
 
         let video = dom.createElement('video');
         video.setAttribute('src', payload.src);
+        video.setAttribute('poster', payload.poster);
         video.setAttribute('width', payload.width);
         video.setAttribute('height', payload.height);
         video.setAttribute('controls', 'controls');
