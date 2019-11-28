@@ -24,9 +24,15 @@ module.exports = function videoEncode(req, res, next) {
             ffmpeg(originalVideoPath).ffprobe((err, data) => {
                 if (err) throw err;
 
-                sessionData.video = data.streams[0];
+                sessionData.video = {
+                    width: data.streams[0].width,
+                    height: data.streams[0].height
+                }
+                req.session.save(function(err) {
+                    if (err) throw err;
+                })
 
-                sessionData.command = ffmpeg(originalVideoPath)
+                ffmpeg(originalVideoPath)
                     .format('mp4')
                     .videoCodec('libx264')
                     .outputOptions([
@@ -38,7 +44,10 @@ module.exports = function videoEncode(req, res, next) {
                         '-movflags +faststart'
                     ])
                     .on('progress', progress => {
-                        sessionData.progress = progress;
+                        sessionData.progress = progress.percent;
+                        req.session.save(function(err) {
+                            if (err) throw err;
+                        })
                     })
                     .on('error', err => {
                         fsPromises.unlink(originalVideoPath);
@@ -52,6 +61,9 @@ module.exports = function videoEncode(req, res, next) {
                             fsPromises.unlink(videoPath);
                             sessionData.finished = true;
                             sessionData.url = url;
+                            req.session.save(function(err) {
+                                if (err) throw err;
+                            })
                         })
                         .catch(err => {
                             fsPromises.unlink(videoPath);
@@ -63,7 +75,8 @@ module.exports = function videoEncode(req, res, next) {
         })
         .catch(err => {
             fsPromises.unlink(videoPath);
-            sessionData.error = err;
+            sessionData.error = err.message;
+            req.session.save();
             common.logging.error(new common.errors.GhostError({
                 err,
                 level: 'critical'

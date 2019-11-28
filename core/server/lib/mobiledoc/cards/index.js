@@ -6,6 +6,7 @@ module.exports = [
     require('./hr'),
     require('./html'),
     require('./image'),
+    require('./video'),
     require('./markdown'),
     require('./gallery')
 ];
