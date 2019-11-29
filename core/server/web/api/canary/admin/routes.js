@@ -192,7 +192,6 @@ module.exports = function apiRoutes() {
     // ## Videos
     router.post('/videos/upload',
         mw.authAdminApi,
-        upload.disableUploadClear,
         upload.single('file'),
         shared.middlewares.validation.upload({type: 'videos'}),
         shared.middlewares.videoEncode,
