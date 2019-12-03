@@ -3,7 +3,7 @@ const urlUtils = require('../../../../../../lib/url-utils');
 const handleImageUrl = (imageUrl) => {
     const blogDomain = urlUtils.getSiteUrl().replace(/^http(s?):\/\//, '').replace(/\/$/, '');
     const imageUrlAbsolute = imageUrl.replace(/^http(s?):\/\//, '');
-    const imagePathRe = new RegExp(`^${blogDomain}/${urlUtils.STATIC_IMAGE_URL_PREFIX}`);
+    const imagePathRe = new RegExp(`^${blogDomain}/${urlUtils.STATIC_STORAGE_URL_PREFIX}`);
 
     if (imagePathRe.test(imageUrlAbsolute)) {
         return urlUtils.absoluteToRelative(imageUrl);

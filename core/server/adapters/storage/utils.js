@@ -18,12 +18,12 @@ exports.getLocalFileStoragePath = function getLocalFileStoragePath(imagePath) {
             urlUtils.urlFor('home', true),
             urlUtils.getSubdir(),
             '/',
-            urlUtils.STATIC_IMAGE_URL_PREFIX)}`
+            urlUtils.STATIC_STORAGE_URL_PREFIX)}`
         ),
         filePathRegExp = new RegExp(`^${urlUtils.urlJoin(
             urlUtils.getSubdir(),
             '/',
-            urlUtils.STATIC_IMAGE_URL_PREFIX)}`
+            urlUtils.STATIC_STORAGE_URL_PREFIX)}`
         );
 
     if (imagePath.match(urlRegExp)) {
