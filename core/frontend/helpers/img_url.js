@@ -11,7 +11,7 @@ const url = require('url');
 const _ = require('lodash');
 const proxy = require('./proxy');
 const urlUtils = proxy.urlUtils;
-const STATIC_STORAGE_URL_PREFIX = `${urlUtils.STATIC_STORAGE_URL_PREFIX}`;
+const STATIC_IMAGE_URL_PREFIX = `${urlUtils.STATIC_IMAGE_URL_PREFIX}`;
 
 module.exports = function imgUrl(requestedImageUrl, options) {
     // CASE: if no url is passed, e.g. `{{img_url}}` we show a warning
@@ -114,11 +114,11 @@ function getImageWithSize(imagePath, requestedSize, imageSizes) {
         return imagePath;
     }
 
-    const [imgBlogUrl, imageName] = imagePath.split(STATIC_STORAGE_URL_PREFIX);
+    const [imgBlogUrl, imageName] = imagePath.split(STATIC_IMAGE_URL_PREFIX);
 
     const sizeDirectoryName = prefixIfPresent('w', width) + prefixIfPresent('h', height);
 
-    return [imgBlogUrl, STATIC_STORAGE_URL_PREFIX, `/size/${sizeDirectoryName}`, imageName].join('');
+    return [imgBlogUrl, STATIC_IMAGE_URL_PREFIX, `/size/${sizeDirectoryName}`, imageName].join('');
 }
 
 function prefixIfPresent(prefix, string) {

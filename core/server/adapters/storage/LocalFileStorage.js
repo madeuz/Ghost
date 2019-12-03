@@ -36,7 +36,7 @@ class LocalFileStore extends StorageBase {
                 // For local file system storage can use relative path so add a slash
                 const fullUrl = (
                     urlUtils.urlJoin('/', urlUtils.getSubdir(),
-                        urlUtils.STATIC_STORAGE_URL_PREFIX,
+                        urlUtils.STATIC_IMAGE_URL_PREFIX,
                         targetPath)
                 ).replace(new RegExp(`\\${path.sep}`, 'g'), '/');
 
@@ -69,7 +69,7 @@ class LocalFileStore extends StorageBase {
             // For local file system storage can use relative path so add a slash
             const fullUrl = (
                 urlUtils.urlJoin('/', urlUtils.getSubdir(),
-                    urlUtils.STATIC_STORAGE_URL_PREFIX,
+                    urlUtils.STATIC_IMAGE_URL_PREFIX,
                     path.relative(this.storagePath, targetFilename))
             ).replace(new RegExp(`\\${path.sep}`, 'g'), '/');
 

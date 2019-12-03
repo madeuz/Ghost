@@ -65,11 +65,11 @@ const forUser = (id, attrs, options) => {
     }
 
     if (attrs.profile_image) {
-        attrs.profile_image = urlUtils.urlFor('storage', {storage: attrs.profile_image}, true);
+        attrs.profile_image = urlUtils.urlFor('image', {image: attrs.profile_image}, true);
     }
 
     if (attrs.cover_image) {
-        attrs.cover_image = urlUtils.urlFor('storage', {storage: attrs.cover_image}, true);
+        attrs.cover_image = urlUtils.urlFor('image', {image: attrs.cover_image}, true);
     }
 
     return attrs;
@@ -81,7 +81,7 @@ const forTag = (id, attrs, options) => {
     }
 
     if (attrs.feature_image) {
-        attrs.feature_image = urlUtils.urlFor('storage', {storage: attrs.feature_image}, true);
+        attrs.feature_image = urlUtils.urlFor('image', {image: attrs.feature_image}, true);
     }
 
     return attrs;
@@ -93,20 +93,20 @@ const forSettings = (attrs) => {
     if (_.isArray(attrs)) {
         attrs.forEach((obj) => {
             if (['cover_image', 'logo', 'icon'].includes(obj.key) && obj.value) {
-                obj.value = urlUtils.urlFor('storage', {storage: obj.value}, true);
+                obj.value = urlUtils.urlFor('image', {image: obj.value}, true);
             }
         });
     } else {
         if (attrs.cover_image) {
-            attrs.cover_image = urlUtils.urlFor('storage', {storage: attrs.cover_image}, true);
+            attrs.cover_image = urlUtils.urlFor('image', {image: attrs.cover_image}, true);
         }
 
         if (attrs.logo) {
-            attrs.logo = urlUtils.urlFor('storage', {storage: attrs.logo}, true);
+            attrs.logo = urlUtils.urlFor('image', {image: attrs.logo}, true);
         }
 
         if (attrs.icon) {
-            attrs.icon = urlUtils.urlFor('storage', {storage: attrs.icon}, true);
+            attrs.icon = urlUtils.urlFor('image', {image: attrs.icon}, true);
         }
     }
 
@@ -114,7 +114,7 @@ const forSettings = (attrs) => {
 };
 
 const forFile = (path) => {
-    return urlUtils.urlFor('storage', {storage: path}, true);
+    return urlUtils.urlFor('image', {image: path}, true);
 };
 
 module.exports.forPost = forPost;

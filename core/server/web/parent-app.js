@@ -10,7 +10,7 @@ const {URL} = require('url');
 const urlUtils = require('../lib/url-utils');
 const storage = require('../adapters/storage');
 
-const STATIC_STORAGE_URL_PREFIX = `/${urlUtils.STATIC_STORAGE_URL_PREFIX}`;
+const STATIC_IMAGE_URL_PREFIX = `/${urlUtils.STATIC_IMAGE_URL_PREFIX}`;
 
 module.exports = function setupParentApp(options = {}) {
     debug('ParentApp setup start');
@@ -61,7 +61,7 @@ module.exports = function setupParentApp(options = {}) {
     // only register this route if the admin is separate so we're not overriding the {site}/content/* route
     if (hasSeparateAdmin) {
         adminApp.use(
-            STATIC_STORAGE_URL_PREFIX,
+            STATIC_IMAGE_URL_PREFIX,
             [
                 shared.middlewares.image.handleImageSizes,
                 storage.getStorage().serve(),
