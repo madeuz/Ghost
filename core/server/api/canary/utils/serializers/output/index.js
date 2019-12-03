@@ -63,8 +63,8 @@ module.exports = {
         return require('./members');
     },
 
-    get images() {
-        return require('./images');
+    get storage() {
+        return require('./storage');
     },
 
     get tags() {

@@ -3743,7 +3743,7 @@ grunt-mocha-cli@4.0.0:
   dependencies:
     mocha "^4.0.0"
 
-grunt-shell@3.0.1:
+grunt-shell@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/grunt-shell/-/grunt-shell-3.0.1.tgz#24e783901543c7269980d534902bedfb94e7ec9f"
   integrity sha512-C8eR4frw/NmIFIwSvzSLS4wOQBUzC+z6QhrKPzwt/tlaIqlzH35i/O2MggVOBj2Sh1tbaAqpASWxGiGsi4JMIQ==

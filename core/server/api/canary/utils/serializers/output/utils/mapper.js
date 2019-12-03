@@ -109,8 +109,8 @@ const mapIntegration = (model, frame) => {
     return jsonModel;
 };
 
-const mapImage = (path) => {
-    return url.forImage(path);
+const mapFile = (path) => {
+    return url.forFile(path);
 };
 
 const mapAction = (model, frame) => {
@@ -129,6 +129,6 @@ module.exports.mapUser = mapUser;
 module.exports.mapTag = mapTag;
 module.exports.mapIntegration = mapIntegration;
 module.exports.mapSettings = mapSettings;
-module.exports.mapImage = mapImage;
+module.exports.mapFile = mapFile;
 module.exports.mapAction = mapAction;
 module.exports.mapMember = mapMember;

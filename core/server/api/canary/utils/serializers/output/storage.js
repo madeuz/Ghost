@@ -1,4 +1,4 @@
-const debug = require('ghost-ignition').debug('api:canary:utils:serializers:output:images');
+const debug = require('ghost-ignition').debug('api:canary:utils:serializers:output:storage');
 const mapper = require('./utils/mapper');
 
 module.exports = {
@@ -6,8 +6,8 @@ module.exports = {
         debug('upload');
 
         return frame.response = {
-            images: [{
-                url: mapper.mapImage(path),
+            files: [{
+                url: mapper.mapFile(path),
                 ref: frame.data.ref || null
             }]
         };
