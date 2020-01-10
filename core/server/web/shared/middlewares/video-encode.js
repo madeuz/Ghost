@@ -5,92 +5,112 @@ const uuid = require('uuid');
 const ffmpeg = require('fluent-ffmpeg');
 const common = require('../../../lib/common');
 const storage = require('../../../adapters/storage');
+const models = require('../../../models');
 
-const createProcessingTask = (session) => {
-    if (!session.processing) {
-        session.processing = {}
-    }
-
-    const processUUID = uuid.v4();
-    const data = session.processing[processUUID] = { finished: false };
-    const save = () => {
-        return new Promise((resolve) => {
-            session.save((err) => {
-                if (err) throw err;
-                resolve();
-            });
-        })
-    }
-
-    return [ processUUID, { data, save } ];
-}
+const createProcessingTask = async () => {
+    const task = {
+        uuid: uuid.v4(),
+        status: 'new',
+        data: {},
+        progress: 0
+    };
+    const taskModel = await models.Processing.add(task);
+    return [task.uuid, taskModel];
+};
 
 const probeVideo = (filePath) => {
     return new Promise((resolve) => {
         ffmpeg.ffprobe(filePath, (err, data) => {
-            if (err) throw err;
+            if (err) {
+                throw err;
+            }
             resolve(data);
         });
-    })
-}
+    });
+};
 
 const makeScreenshot = (filePath, screenshotName) => {
     const filePathData = path.parse(filePath);
     return new Promise((resolve) => {
         ffmpeg(filePath)
-        .on('error', err => {
-            fsPromises.unlink(filePath);
-            throw err;
-        })
-        .on('end', function() {
-            resolve({
-                path: path.join(filePathData.dir, `${filePathData.name}.jpg`),
-                name: `${screenshotName}.jpg`,
-                type: 'image/jpeg'
+            .on('error', (err) => {
+                fsPromises.unlink(filePath);
+                throw err;
             })
-        })
-        .screenshots({
-            timestamps: ['50%'],
-            filename: `${filePathData.name}.jpg`,
-            folder: filePathData.dir
-        });
-    })
-}
+            .on('end', function () {
+                resolve({
+                    path: path.join(filePathData.dir, `${filePathData.name}.jpg`),
+                    name: `${screenshotName}.jpg`,
+                    type: 'image/jpeg'
+                });
+            })
+            .screenshots({
+                timestamps: ['50%'],
+                filename: `${filePathData.name}.jpg`,
+                folder: filePathData.dir
+            });
+    });
+};
 
-const encodeVideoFile = (filePath, outputPath, videoName, progressStore) => {
+const throttle = (func, limit) => {
+    let lastFunc;
+    let lastRan;
+    return function () {
+        const context = this;
+        const args = arguments;
+        if (!lastRan) {
+            func.apply(context, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function () {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    };
+};
+
+const throttledEdit = throttle(models.Processing.edit, 1000);
+
+const encodeVideoFile = (filePath, outputPath, videoName, taskModel) => {
     return new Promise((resolve) => {
         ffmpeg(filePath)
-        .format('mp4')
-        .videoCodec('libx264')
-        .outputOptions([
-            '-crf 28',
-            '-level 3',
-            '-preset slow',
-            '-pix_fmt yuv420p',
-            '-profile:v baseline',
-            '-movflags +faststart'
-        ])
-        .on('progress', progress => {
-            progressStore.data.progress = progress.percent;
-            progressStore.save();
-        })
-        .on('error', err => {
-            fsPromises.unlink(filePath);
-            throw err;
-        })
-        .on('end', () => {
-            fsPromises.unlink(filePath);
-            resolve({
-                path: outputPath,
-                name: videoName,
-                type: 'video/mp4'
+            .format('mp4')
+            .videoCodec('libx264')
+            .outputOptions([
+                '-crf 28',
+                '-level 3',
+                '-preset slow',
+                '-pix_fmt yuv420p',
+                '-profile:v baseline',
+                '-movflags +faststart'
+            ])
+            .on('progress', (progress) => {
+                throttledEdit.call(models.Processing, {
+                    progress: progress.percent.toFixed(2),
+                    status: 'running'
+                }, {id: taskModel.id});
             })
-        })
-        .save(outputPath);
-    })
-}
+            .on('error', (err) => {
+                fsPromises.unlink(filePath);
+                throw err;
+            })
+            .on('end', () => {
+                fsPromises.unlink(filePath);
+                resolve({
+                    path: outputPath,
+                    name: videoName,
+                    type: 'video/mp4'
+                });
+            })
+            .save(outputPath);
+    });
+};
 
-const startVideoProcessing = async (filePath, fileName, taskStore, fileStorage) => {
+const startVideoProcessing = async (filePath, fileName, taskModel, fileStorage) => {
     const parsedVideoPath = path.parse(filePath);
     const parsedVideoName = path.parse(fileName);
     const originalVideoPath = path.join(parsedVideoPath.dir, `${parsedVideoPath.name}_o${parsedVideoPath.ext}`);
@@ -98,39 +118,57 @@ const startVideoProcessing = async (filePath, fileName, taskStore, fileStorage) 
     try {
         await fsPromises.rename(filePath, originalVideoPath);
 
+        const taskData = taskModel.data || {};
+
         const videoMetadata = await probeVideo(originalVideoPath);
-        taskStore.data.video = {
+        taskData.video = {
             width: videoMetadata.streams[0].width,
             height: videoMetadata.streams[0].height
-        }
-        
+        };
+
         const screenshot = await makeScreenshot(originalVideoPath, parsedVideoName.name);
-        taskStore.data.poster = await fileStorage.save(screenshot);
+        taskData.poster = await fileStorage.save(screenshot);
         fsPromises.unlink(screenshot.path);
-        
-        const video = await encodeVideoFile(originalVideoPath, filePath, fileName, taskStore);
-        taskStore.data.url = await fileStorage.save(video);
+
+        const video = await encodeVideoFile(originalVideoPath, filePath, fileName, taskModel);
+        taskData.url = await fileStorage.save(video);
         fsPromises.unlink(filePath);
-        
-        taskStore.data.finished = true;
-        taskStore.save();
-    }
-    catch (err) {
+
+        models.Processing.edit({
+            data: taskData,
+            status: 'finished',
+            progress: 100
+        }, {id: taskModel.id});
+    } catch (err) {
         fsPromises.unlink(filePath);
-        taskStore.data.error = err.message;
-        taskStore.save();
+        models.Processing.edit({
+            data: {error: err.message},
+            status: 'error'
+        }, {id: taskModel.id});
         common.logging.error(new common.errors.GhostError({
             err,
             level: 'critical'
         }));
     }
-}
+};
 
-module.exports = function videoEncode(req, res, next) {
-    const [ taskId, taskStore ] = createProcessingTask(req.session);
-    startVideoProcessing(req.file.path, req.file.name, taskStore, storage.getStorage());
+module.exports = async function videoEncode(req, res, next) {
+    let taskUUID, taskModel;
+
+    try {
+        [taskUUID, taskModel] = await createProcessingTask();
+    } catch (err) {
+        common.logging.error(new common.errors.GhostError({
+            err,
+            level: 'critical'
+        }));
+        next();
+        return;
+    }
+
+    startVideoProcessing(req.file.path, req.file.name, taskModel, storage.getStorage());
 
     req.disableUploadClear = true;
-    req.processUUID = taskId;
+    req.processUUID = taskUUID;
     next();
 };

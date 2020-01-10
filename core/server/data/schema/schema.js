@@ -373,5 +373,16 @@ module.exports = {
         // @NOTE: The context object can be used to store information about an action e.g. diffs, meta
         context: {type: 'text', maxlength: 1000000000, nullable: true},
         created_at: {type: 'dateTime', nullable: false}
+    },
+    processing: {
+        id: {type: 'string', maxlength: 24, nullable: false, primary: true},
+        uuid: {type: 'string', maxlength: 36, nullable: false, validations: {isUUID: true}},
+        created_at: {type: 'dateTime', nullable: false},
+        created_by: {type: 'string', maxlength: 24, nullable: false},
+        updated_at: {type: 'dateTime', nullable: true},
+        updated_by: {type: 'string', maxlength: 24, nullable: true},
+        status: {type: 'string', maxlength: 50, nullable: false},
+        data: {type: 'string', maxlength: 2000, nullable: false},
+        progress: {type: 'string', maxlength: 10, nullable: true}
     }
 };
