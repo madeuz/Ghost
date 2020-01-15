@@ -30,6 +30,6 @@ module.exports = {
             return Promise.reject(new common.errors.NotFoundError());
         }
 
-        return models.Processing.destroy({uuid: object.id});
+        return models.Processing.destroy({destroyBy: {uuid: object.id}});
     }
 };

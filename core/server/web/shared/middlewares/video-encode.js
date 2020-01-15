@@ -7,6 +7,13 @@ const common = require('../../../lib/common');
 const storage = require('../../../adapters/storage');
 const models = require('../../../models');
 
+const storageObject = storage.getStorage();
+storageObject.getUniqueFileName = (image, targetDir) => {
+    var ext = path.extname(image.name), name;
+    name = this.getSanitizedFileName(path.basename(image.name, ext));
+    return this.generateUnique(targetDir, name, ext, 0);
+};
+
 const createProcessingTask = async () => {
     const task = {
         uuid: uuid.v4(),
@@ -166,7 +173,7 @@ module.exports = async function videoEncode(req, res, next) {
         return;
     }
 
-    startVideoProcessing(req.file.path, req.file.name, taskModel, storage.getStorage());
+    startVideoProcessing(req.file.path, req.file.name, taskModel, storageObject);
 
     req.disableUploadClear = true;
     req.processUUID = taskUUID;
