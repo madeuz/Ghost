@@ -21,15 +21,5 @@ module.exports = {
         }
 
         return models.Processing.findOne({uuid: object.id});
-    },
-
-    destroy(frame) {
-        const object = frame.original.params;
-
-        if (!object || !object.id) {
-            return Promise.reject(new common.errors.NotFoundError());
-        }
-
-        return models.Processing.destroy({destroyBy: {uuid: object.id}});
     }
 };
