@@ -129,8 +129,8 @@ const startVideoProcessing = async (filePath, fileName, taskModel, fileStorage) 
 
         const videoMetadata = await probeVideo(originalVideoPath);
         taskData.video = {
-            width: videoMetadata.streams[0].width,
-            height: videoMetadata.streams[0].height
+            width: videoMetadata.streams[0].width || videoMetadata.streams[1].width,
+            height: videoMetadata.streams[0].height || videoMetadata.streams[1].height
         };
 
         const screenshot = await makeScreenshot(originalVideoPath, parsedVideoName.name);
