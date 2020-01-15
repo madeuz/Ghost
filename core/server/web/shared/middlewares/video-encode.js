@@ -8,7 +8,7 @@ const storage = require('../../../adapters/storage');
 const models = require('../../../models');
 
 const storageObject = storage.getStorage();
-storageObject.getUniqueFileName = (image, targetDir) => {
+storageObject.getUniqueFileName = function (image, targetDir) {
     var ext = path.extname(image.name), name;
     name = this.getSanitizedFileName(path.basename(image.name, ext));
     return this.generateUnique(targetDir, name, ext, 0);
