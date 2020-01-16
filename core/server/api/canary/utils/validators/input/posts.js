@@ -5,7 +5,7 @@ const validateForPublish = (post) => {
     if (post.tags.length === 0) {
         return Promise.reject(new common.errors.ValidationError({message: 'Please provide at least one tag.'}));
     }
-    if (!post.feature_image) {
+    if (!post.feature_image || !post.feature_image_width || !post.feature_image_height) {
         return Promise.reject(new common.errors.ValidationError({message: 'Please provide featured image.'}));
     }
     return true;
@@ -16,7 +16,7 @@ module.exports = {
         const schema = require(`./schemas/posts-add`);
         const definitions = require('./schemas/posts');
         const data = frame.data.posts[0];
-        
+
         if (data.status !== 'draft') {
             const validForPublish = validateForPublish(data);
             if (validForPublish !== true) {
