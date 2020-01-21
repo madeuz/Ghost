@@ -1,4 +1,8 @@
 const url = require('url');
+const path = require('path');
+const fsPromises = require('fs').promises;
+const ffmpeg = require('fluent-ffmpeg');
+const storage = require('../../adapters/storage');
 
 const _private = {};
 
@@ -42,4 +46,33 @@ module.exports.checkFileIsValid = function checkFileIsValid(fileData, types, ext
     }
 
     return false;
+};
+
+module.exports.videoPoster = async function videoPoster(src, time) {
+    const parsedUrl = url.parse(src);
+    const fileName = path.basename(parsedUrl.path.split('/').pop(), '.mp4');
+    const filePath = path.join('/tmp', `${fileName}.jpg`);
+
+    const screenshot = await new Promise((resolve) => {
+        ffmpeg(src)
+            .on('error', (err) => {
+                throw err;
+            })
+            .on('end', function () {
+                resolve({
+                    path: filePath,
+                    name: `${fileName}.jpg`,
+                    type: 'image/jpeg'
+                });
+            })
+            .screenshots({
+                timestamps: [time],
+                filename: `${fileName}.jpg`,
+                folder: '/tmp'
+            });
+    });
+
+    const poster = await storage.getStorage().save(screenshot);
+    fsPromises.unlink(filePath);
+    return {src: poster};
 };

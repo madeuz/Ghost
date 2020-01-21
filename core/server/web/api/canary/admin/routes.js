@@ -198,8 +198,9 @@ module.exports = function apiRoutes() {
         http(apiCanary.processing.init)
     );
 
+    router.get('/videos/poster', mw.authAdminApi, http(apiCanary.processing.poster));
+
     router.get('/processing/:id', mw.authAdminApi, http(apiCanary.processing.read));
-    router.del('/processing/:id', mw.authAdminApi, http(apiCanary.processing.destroy));
 
     // ## Documents
     router.post('/documents/upload',
