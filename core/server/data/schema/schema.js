@@ -386,5 +386,17 @@ module.exports = {
         status: {type: 'string', maxlength: 50, nullable: false},
         data: {type: 'string', maxlength: 2000, nullable: false},
         progress: {type: 'string', maxlength: 10, nullable: true}
+    },
+    subscriptions: {
+        id: {type: 'string', maxlength: 24, nullable: false, primary: true},
+        endpoint: {type: 'string', maxlength: 255, nullable: false},
+        p256dh: {type: 'string', maxlength: 255, nullable: false},
+        auth: {type: 'string', maxlength: 255, nullable: false},
+        expirationTime: {type: 'bigInteger', nullable: true},
+        ip: {type: 'string', maxlength: 45, nullable: false},
+        tag: {type: 'string', maxlength: 191, nullable: true},
+        url: {type: 'string', maxlength: 255, nullable: false},
+        created_at: {type: 'dateTime', nullable: false},
+        updated_at: {type: 'dateTime', nullable: true}
     }
 };

@@ -3,6 +3,8 @@ const cors = require('cors');
 const apiCanary = require('../../../../api/canary');
 const mw = require('./middleware');
 
+const shared = require('../../../shared');
+
 module.exports = function apiRoutes() {
     const router = express.Router();
 
@@ -32,6 +34,12 @@ module.exports = function apiRoutes() {
 
     // ## Settings
     router.get('/settings', mw.authenticatePublic, http(apiCanary.publicSettings.browse));
+
+    // ## Subscriptions
+    router.post('/subscription', mw.authenticatePublic, shared.middlewares.userIP,
+        http(apiCanary.subscriptionsPublic.subscribe)
+    );
+    router.delete('/subscription', mw.authenticatePublic, http(apiCanary.subscriptionsPublic.unsubscribe));
 
     return router;
 };

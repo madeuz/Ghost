@@ -101,5 +101,9 @@ module.exports = {
 
     get site() {
         return require('./site');
+    },
+
+    get subscriptions() {
+        return require('./subscriptions');
     }
 };

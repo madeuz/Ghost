@@ -111,6 +111,14 @@ module.exports = {
         return shared.pipeline(require('./site'), localUtils);
     },
 
+    get subscriptions() {
+        return shared.pipeline(require('./subscriptions'), localUtils);
+    },
+
+    get pushMessages() {
+        return shared.pipeline(require('./push-messages'), localUtils);
+    },
+
     get serializers() {
         return require('./utils/serializers');
     },
@@ -145,5 +153,9 @@ module.exports = {
 
     get authorsPublic() {
         return shared.pipeline(require('./authors-public'), localUtils, 'content');
+    },
+
+    get subscriptionsPublic() {
+        return shared.pipeline(require('./subscriptions-public'), localUtils, 'content');
     }
 };

@@ -89,5 +89,9 @@ module.exports = {
 
     get emitEvents() {
         return require('./emit-events');
+    },
+
+    get userIP() {
+        return require('./userIP');
     }
 };

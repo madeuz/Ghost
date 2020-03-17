@@ -45,5 +45,9 @@ module.exports = {
 
     get oembed() {
         return require('./oembed');
+    },
+
+    get subscriptions() {
+        return require('./subscriptions');
     }
 };
