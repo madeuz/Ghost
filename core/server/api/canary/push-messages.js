@@ -16,7 +16,7 @@ module.exports = {
         ],
         permissions: true,
         query(frame) {
-            return models.Subscription.findPage(frame.options);
+            return models.PushMessage.findPage(frame.options);
         }
     },
 
@@ -32,7 +32,7 @@ module.exports = {
         ],
         permissions: true,
         query(frame) {
-            return models.Subscription.findOne(frame.data, frame.options)
+            return models.PushMessage.findOne(frame.data, frame.options)
                 .then((model) => {
                     if (!model) {
                         return Promise.reject(new common.errors.NotFoundError({
@@ -45,11 +45,16 @@ module.exports = {
         }
     },
 
-    destroy: {
-        statusCode: 204,
-        headers: {
-            cacheInvalidate: true
-        },
+    add: {
+        statusCode: 201,
+        options: [],
+        permissions: true,
+        query(frame) {
+            return models.PushMessage.add(frame.data.pushMessages[0], frame.options);
+        }
+    },
+
+    edit: {
         options: [
             'id'
         ],
@@ -62,7 +67,33 @@ module.exports = {
         },
         permissions: true,
         query(frame) {
-            return models.Subscription.destroy(frame.options).return(null);
+            return models.PushMessage.edit(frame.data.pushMessages[0], frame.options)
+                .then((model) => {
+                    if (!model) {
+                        return Promise.reject(new common.errors.NotFoundError({
+                            message: common.i18n.t('errors.api.pushMessages.pushMessageNotFound')
+                        }));
+                    }
+                    return model;
+                });
+        }
+    },
+
+    destroy: {
+        statusCode: 204,
+        options: [
+            'id'
+        ],
+        validation: {
+            options: {
+                id: {
+                    required: true
+                }
+            }
+        },
+        permissions: true,
+        query(frame) {
+            return models.PushMessage.destroy(frame.options).return(null);
         }
     }
 };

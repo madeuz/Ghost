@@ -398,5 +398,20 @@ module.exports = {
         url: {type: 'string', maxlength: 255, nullable: false},
         created_at: {type: 'dateTime', nullable: false},
         updated_at: {type: 'dateTime', nullable: true}
+    },
+    push_messages: {
+        id: {type: 'string', maxlength: 24, nullable: false, primary: true},
+        title: {type: 'string', maxlength: 2000, nullable: false},
+        excerpt: {type: 'string', maxlength: 2000, nullable: false},
+        icon: {type: 'string', maxlength: 2000, nullable: false},
+        photo: {type: 'string', maxlength: 2000, nullable: false},
+        click_url: {type: 'string', maxlength: 2000, nullable: false},
+        expiry_at: {type: 'dateTime', nullable: true},
+        scheduled_at: {type: 'dateTime', nullable: true},
+        status: {type: 'string', maxlength: 50, nullable: false},
+        created_at: {type: 'dateTime', nullable: false},
+        created_by: {type: 'string', maxlength: 24, nullable: false},
+        updated_at: {type: 'dateTime', nullable: true},
+        updated_by: {type: 'string', maxlength: 24, nullable: true}
     }
 };

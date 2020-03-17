@@ -243,7 +243,9 @@ module.exports = function apiRoutes() {
 
     // ## Push Messages
     router.get('/push-messages', mw.authAdminApi, http(apiCanary.pushMessages.browse));
+    router.post('/push-messages', mw.authAdminApi, http(apiCanary.pushMessages.add));
     router.get('/push-messages/:id', mw.authAdminApi, http(apiCanary.pushMessages.read));
+    router.put('/push-messages/:id', mw.authAdminApi, http(apiCanary.pushMessages.edit));
     router.del('/push-messages/:id', mw.authAdminApi, http(apiCanary.pushMessages.destroy));
 
     return router;

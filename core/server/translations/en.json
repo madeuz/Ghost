@@ -462,6 +462,12 @@
                 "ThemeValidationError": "Theme validation error, cannot {action}.",
                 "DisabledFeatureError": "Theme validation error, the {{{helperName}}} helper is not available. Cannot {action}.",
                 "UpdateCollisionError": "Saving failed! Someone else is editing this post."
+            },
+            "subscriptions": {
+                "subscriptionNotFound": "Subscription not found."
+            },
+            "pushMessages": {
+                "pushMessageNotFound": "Push Message not found."
             }
         },
         "data": {

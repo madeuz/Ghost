@@ -38,7 +38,8 @@ models = [
     'member-stripe-customer',
     'stripe-customer-subscription',
     'processing',
-    'subscription'
+    'subscription',
+    'push-message'
 ];
 
 function init() {

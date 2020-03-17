@@ -47,9 +47,6 @@ module.exports = {
 
     destroy: {
         statusCode: 204,
-        headers: {
-            cacheInvalidate: true
-        },
         options: [
             'id'
         ],

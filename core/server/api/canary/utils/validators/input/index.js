@@ -49,5 +49,9 @@ module.exports = {
 
     get subscriptions() {
         return require('./subscriptions');
+    },
+
+    get pushMessages() {
+        return require('./push-messages');
     }
 };

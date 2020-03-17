@@ -129,6 +129,11 @@ const mapSubscription = (model, frame) => {
     return jsonModel;
 };
 
+const mapPushMessage = (model, frame) => {
+    const jsonModel = model.toJSON ? model.toJSON(frame.options) : model;
+    return jsonModel;
+};
+
 module.exports.mapPost = mapPost;
 module.exports.mapUser = mapUser;
 module.exports.mapTag = mapTag;
@@ -138,3 +143,4 @@ module.exports.mapFile = mapFile;
 module.exports.mapAction = mapAction;
 module.exports.mapMember = mapMember;
 module.exports.mapSubscription = mapSubscription;
+module.exports.mapPushMessage = mapPushMessage;

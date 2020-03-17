@@ -1,0 +1,65 @@
+
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "pushMessages",
+    "title": "pushMessages",
+    "description": "Base push messages definitions",
+    "definitions": {
+        "tag": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "maxLength": 2000
+                },
+                "excerpt": {
+                    "type": "string",
+                    "maxLength": 2000
+                },
+                "icon": {
+                    "type": "string",
+                    "format": "uri-reference",
+                    "maxLength": 2000
+                },
+                "photo": {
+                    "type": ["string", "null"],
+                    "format": "uri-reference",
+                    "maxLength": 2000
+                },
+                "click_url": {
+                    "type": "string",
+                    "format": "uri-reference",
+                    "maxLength": 2000
+                },
+                "expiry_at": {
+                    "type": ["string", "null"],
+                    "format": "date-time"
+                },
+                "scheduled_at": {
+                    "type": ["string", "null"],
+                    "format": "date-time"
+                },
+                "status": {
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "id": {
+                    "strip": true
+                },
+                "created_at": {
+                    "strip": true
+                },
+                "created_by": {
+                    "strip": true
+                },
+                "updated_at": {
+                    "strip": true
+                },
+                "updated_by": {
+                    "strip": true
+                }
+            }
+        }
+    }
+}
