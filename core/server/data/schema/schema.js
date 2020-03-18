@@ -413,5 +413,15 @@ module.exports = {
         created_by: {type: 'string', maxlength: 24, nullable: false},
         updated_at: {type: 'dateTime', nullable: true},
         updated_by: {type: 'string', maxlength: 24, nullable: true}
+    },
+    push_messages_subscriptions: {
+        id: {type: 'string', maxlength: 24, nullable: false, primary: true},
+        push_message_id: {type: 'string', maxlength: 24, nullable: false, unique: false},
+        subscription_id: {type: 'string', maxlength: 24, nullable: false, unique: false},
+        sent_at: {type: 'dateTime', nullable: true},
+        delivered_at: {type: 'dateTime', nullable: true},
+        clicked_at: {type: 'dateTime', nullable: true},
+        created_at: {type: 'dateTime', nullable: false},
+        updated_at: {type: 'dateTime', nullable: true}
     }
 };

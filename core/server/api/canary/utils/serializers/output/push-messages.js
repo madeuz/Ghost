@@ -1,4 +1,4 @@
-const debug = require('ghost-ignition').debug('api:canary:utils:serializers:output:subscriptions');
+const debug = require('ghost-ignition').debug('api:canary:utils:serializers:output:pushMessages');
 const mapper = require('./utils/mapper');
 
 module.exports = {

@@ -242,11 +242,11 @@ module.exports = function apiRoutes() {
     router.del('/subscriptions/:id', mw.authAdminApi, http(apiCanary.subscriptions.destroy));
 
     // ## Push Messages
-    router.get('/push-messages', mw.authAdminApi, http(apiCanary.pushMessages.browse));
-    router.post('/push-messages', mw.authAdminApi, http(apiCanary.pushMessages.add));
-    router.get('/push-messages/:id', mw.authAdminApi, http(apiCanary.pushMessages.read));
-    router.put('/push-messages/:id', mw.authAdminApi, http(apiCanary.pushMessages.edit));
-    router.del('/push-messages/:id', mw.authAdminApi, http(apiCanary.pushMessages.destroy));
+    router.get('/pushMessages', mw.authAdminApi, http(apiCanary.pushMessages.browse));
+    router.post('/pushMessages', mw.authAdminApi, http(apiCanary.pushMessages.add));
+    router.get('/pushMessages/:id', mw.authAdminApi, http(apiCanary.pushMessages.read));
+    router.put('/pushMessages/:id', mw.authAdminApi, http(apiCanary.pushMessages.edit));
+    router.del('/pushMessages/:id', mw.authAdminApi, http(apiCanary.pushMessages.destroy));
 
     return router;
 };

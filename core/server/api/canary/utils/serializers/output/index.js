@@ -107,7 +107,7 @@ module.exports = {
         return require('./subscriptions');
     },
 
-    get pushMessages() {
+    get 'push-messages'() {
         return require('./push-messages');
     }
 };
