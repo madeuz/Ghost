@@ -3,7 +3,7 @@ const common = require('../../lib/common');
 const models = require('../../models');
 
 module.exports = {
-    docName: 'push-messages',
+    docName: 'pushmessages',
 
     browse: {
         options: [
