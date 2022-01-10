@@ -21,6 +21,16 @@ module.exports = createCard({
 
         let img = dom.createElement('img');
         img.setAttribute('src', payload.src);
+
+        const imageNoExt = payload.src.includes('_w1000.webp') ? payload.src.replace(/_w1000\.webp$/, '') : null;
+        if (imageNoExt) {
+            img.setAttribute('srcset', `${imageNoExt}_w300.webp 300w,
+                                                     ${imageNoExt}_w500.webp 500w,
+                                                     ${imageNoExt}_w1000.webp 1000w`);
+
+            img.setAttribute('sizes', '(max-width: 300px) 300px, (max-width: 500px) 500px, 1000px');
+        }
+
         img.setAttribute('class', 'kg-image');
         if (payload.alt) {
             img.setAttribute('alt', payload.alt);
